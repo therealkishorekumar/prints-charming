@@ -16,3 +16,10 @@ venv/
 .venv/
 pip-log.txt
 pip-delete-this-directory.txt
+
+# Ignore IDE / Agent Artifacts
+.vscode/
+.cursor/
+.cursor-server/
+.gemini/
+.idea/
