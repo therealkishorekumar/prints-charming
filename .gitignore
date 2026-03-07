@@ -1,0 +1,18 @@
+# Ignore sensitive data and dependencies
+.env
+memory.json
+
+# Ignore logs
+*.log
+prints_charming.log
+
+# Ignore Python specific files
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt

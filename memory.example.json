@@ -1,0 +1,24 @@
+{
+    "project_name": "Prints Charming",
+    "recipient": "Partner",
+    "tone": "personal, romantic, and subtle",
+    "schedule": "10:00 AM daily, before work",
+    "life_details": {
+        "inside_jokes": [
+            "Example: That time we got lost in Kyoto",
+            "Example: The burnt toast incident"
+        ],
+        "recent_events": [
+            "Example: Just adopted a puppy",
+            "Example: Anniversary coming up next week"
+        ],
+        "favorite_memories": [
+            "Example: Our first date at the coffee shop",
+            "Example: Watching the sunset at the beach"
+        ],
+        "current_mood": [
+            "Example: Feeling cozy because it's raining",
+            "Example: Excited for the weekend trip"
+        ]
+    }
+}
