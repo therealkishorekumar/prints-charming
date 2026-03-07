@@ -25,7 +25,7 @@ load_dotenv()
 # Initialize OpenAI Client pointing to Moonshot AI
 client = OpenAI(
     api_key=os.environ.get("MOONSHOT_API_KEY"),
-    base_url="https://api.moonshot.cn/v1",
+    base_url="https://api.moonshot.ai/v1",
 )
 
 # Paths
@@ -93,7 +93,7 @@ def generate_poem(retries=3):
     for attempt in range(retries):
         try:
             response = client.chat.completions.create(
-                model="moonshot-v1-8k",
+                model="kimi-k2.5",
                 messages=[
                     {"role": "system", "content": "You are 'Prints Charming', a romantic poet who writes deeply personal and subtle daily poems for a beloved wife."},
                     {"role": "user", "content": prompt}
