@@ -93,7 +93,7 @@ def generate_poem(retries=3):
     for attempt in range(retries):
         try:
             response = client.chat.completions.create(
-                model="kimi-k2.5",
+                model="moonshot-v1-8k",
                 messages=[
                     {"role": "system", "content": "You are 'Prints Charming', a romantic poet who writes deeply personal and subtle daily poems for a beloved wife."},
                     {"role": "user", "content": prompt}
