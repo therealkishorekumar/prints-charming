@@ -27,7 +27,7 @@ This project uses `.env` for secrets and `memory.json` for personalization. **Th
 ```bash
 cp .env.example .env
 ```
-Edit `.env` and add your OpenAI API Key.
+Edit `.env` and add your Moonshot API Key.
 
 **Set up your Personal Memories:**
 ```bash

@@ -22,8 +22,11 @@ logger = logging.getLogger(__name__)
 # Load .env file
 load_dotenv()
 
-# Initialize OpenAI Client
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+# Initialize OpenAI Client pointing to Moonshot AI
+client = OpenAI(
+    api_key=os.environ.get("MOONSHOT_API_KEY"),
+    base_url="https://api.moonshot.cn/v1",
+)
 
 # Paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -90,7 +93,7 @@ def generate_poem(retries=3):
     for attempt in range(retries):
         try:
             response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model="moonshot-v1-8k",
                 messages=[
                     {"role": "system", "content": "You are 'Prints Charming', a romantic poet who writes deeply personal and subtle daily poems for a beloved wife."},
                     {"role": "user", "content": prompt}
