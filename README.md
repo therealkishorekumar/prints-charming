@@ -1,20 +1,20 @@
 # Prints Charming 📜🖨️
 
-So, here's the deal: I wanted to do something romantic for my partner every morning before work, but I'm also a massive nerd. Naturally, my solution involved a serial thermal receipt printer and an AI model.
+Build Prints_Charming when my wife was pregnant to write her poetry on my behalf (reserve your judgments). Naturally, my solution involved a serial thermal receipt printer and an AI model.
 
-Prints Charming is a little Flask app that generates a highly personalized, 4-line love poem every day and spits it out on a thermal printer. It uses Moonshot AI (because why not?) and pulls from a local JSON file full of our inside jokes, recent events, and my general mood.
+Prints Charming is a little Flask app that generates a highly personalized, 4-line love poem every day and spits it out on a thermal printer. It's flexible to use any mode (OpenAI/Anthropic, Moonshot...) and pulls from a local JSON file full of our inside jokes, recent events, favorite poets, an general vibes.
 
-It's probably over-engineered for "saying good morning", but hey, it works! 
+Probably over-engineered, but hey, it works! 
 
 ## Features (If you can call them that)
 - 🧠 **"Memory" System**: A fancy way of saying there's a JSON file where I dump inside jokes and memories so I don't have to touch the Python code ever again.
-- 🤖 **AI Poetry**: Uses Moonshot AI (`moonshot-v1-8k`) via the OpenAI Python SDK. Yes, the SDKs are compatible. 
-- 🖨️ **Thermal Printer Integration**: Prints directly to a serial thermal printer (like those little Adafruit ones).
-- 🛡️ **Error Handling**: It has retries! Because my network drops at the exact moment it's supposed to print.
+- 🤖 **AI Poetry**: Currently Uses Moonshot AI (`moonshot-v1-8k`) via the OpenAI Python SDK. Yes, the SDKs are compatible. I highly reccomend OpenAI models.
+- 🖨️ **Thermal Printer Integration**: Prints directly to a serial thermal printer (I have one those little Adafruit ones).
+- 🛡️ **Error Handling**: It has retries! Because my network often drops at the exact moment it's supposed to print.
 
 ## Hardware Stuff
 - A machine to run it (I use a Raspberry Pi, but a Mac Mini or an old laptop works too).
-- A Serial Thermal Receipt Printer.
+- A Serial Thermal Receipt Printer. Highly reccomend getting a bluetooth one.
 
 ## How to Set It Up (Assuming you want to steal this idea)
 
@@ -31,7 +31,7 @@ I've ignored the real files in `.gitignore` so I don't accidentally leak my API 
 ```bash
 cp .env.example .env
 ```
-Throw your Moonshot API Key in there. (Or OpenAI, if you change the base URL back).
+Throw your LLM Model API Key in there. ( Currenly set to Moonshot,if you use OpenAI, if you change the base URL back).
 
 **Your Memories:**
 ```bash
@@ -79,4 +79,4 @@ Instead of a dumb timer, you can set an automation: *"Trigger the webhook `http:
 If you find a way to make this even more unnecessarily complicated, my pull requests are open. 
 
 ## License
-MIT. Do whatever you want with it, just don't blame me if it prints an essay instead of a haiku.
+MIT. Do whatever you want with it, just don't blame me if it prints an essay instead of a haiku or if your wife calls you a nerd! 
