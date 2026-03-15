@@ -8,7 +8,7 @@ Probably over-engineered, but hey, it works!
 
 ## Features (If you can call them that)
 - 🧠 **"Memory" System**: A fancy way of saying there's a JSON file where I dump inside jokes and memories so I don't have to touch the Python code ever again.
-- 🤖 **AI Poetry**: Currently Uses Moonshot AI (`moonshot-v1-8k`) via the OpenAI Python SDK. Yes, the SDKs are compatible. I highly reccomend OpenAI models.
+- 🤖 **AI Poetry**: Currently uses Moonshot AI (`moonshot-v1-8k`) via the OpenAI Python SDK. Yes, the SDKs are compatible. I highly reccomend OpenAI models.
 - 🖨️ **Thermal Printer Integration**: Prints directly to a serial thermal printer (I have one those little Adafruit ones).
 - 🛡️ **Error Handling**: It has retries! Because my network often drops at the exact moment it's supposed to print.
 

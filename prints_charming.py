@@ -5,6 +5,7 @@ import time
 import os
 import json
 import logging
+import textwrap
 from dotenv import load_dotenv
 
 # Set up logging
@@ -35,8 +36,8 @@ MEMORY_FILE = os.path.join(BASE_DIR, "memory.json")
 # Initialize the thermal printer
 try:
     printer = serial.Serial(
-        port="/dev/serial0",   # Or "/dev/ttyAMA0" depending on your Pi
-        baudrate=19200,        # Match your printer's baud rate
+        port="/dev/rfcomm0",   # MPT-II Bluetooth printer
+        baudrate=9600,         # Match your printer's baud rate
         timeout=1
     )
     time.sleep(2)  # Let printer initialize
@@ -120,15 +121,18 @@ def print_poem(poem):
 
     try:
         # Charming header
-        printer.write(b"\n  -- Prints Charming --  \n")
-        printer.write(b"  " + time.strftime("%A, %b %d").encode('utf-8') + b"  \n\n")
+        printer.write(b"\r\n  -- Prints Charming --  \r\n")
+        printer.write(b"  " + time.strftime("%A, %b %d").encode('utf-8') + b"  \r\n\r\n")
         
         for line in poem.split('\n'):
-            printer.write(line.encode('utf-8') + b'\n')
+            # Standard 58mm thermal printers usually fit 32 chars per line max.
+            wrapped_lines = textwrap.wrap(line, width=32)
+            for wrapped_line in wrapped_lines:
+                printer.write(wrapped_line.encode('utf-8') + b'\r\n')
         
-        printer.write(b"\n      With love,      \n")
-        printer.write(b"      Kishore         \n\n")
-        printer.write(b"------------------------\n\n")
+        printer.write(b"\r\n      With love,      \r\n")
+        printer.write(b"      Kishore         \r\n\r\n")
+        printer.write(b"------------------------\r\n\r\n")
         printer.flush()
         logger.info("🖨️ Poem sent to printer successfully.")
         return True
