@@ -4,7 +4,35 @@ Build Prints_Charming when my wife was pregnant to write her poetry on my behalf
 
 Prints Charming is a little Flask app that generates a highly personalized, 4-line love poem every day and spits it out on a thermal printer. It's flexible to use any mode (OpenAI/Anthropic, Moonshot...) and pulls from a local JSON file full of our inside jokes, recent events, favorite poets, an general vibes.
 
-Probably over-engineered, but hey, it works! 
+## Architecture
+
+```mermaid
+flowchart TD
+    subgraph Data
+        M[(memory.json)] -.-> |"Context & Vibes"| F
+    end
+
+    subgraph Server["Raspberry Pi / Mac"]
+        CR(Cronjob / Home Assistant) -->|"POST /print-poem"| F[Flask App]
+        F -->|"Prompt"| LLM
+        LLM -->|"4-Line Poem"| F
+    end
+    
+    subgraph External ["Cloud AI"]
+        LLM((Moonshot AI / OpenAI))
+    end
+
+    subgraph Hardware ["Device"]
+        F -->|"Serial / Bluetooth"| P[Thermal Printer]
+        P -.->|"Prints Poem"| W(Wife)
+    end
+
+    style Server fill:#f9f9f9,stroke:#333,stroke-width:2px
+    style External fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style Hardware fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+```
+
+Probably over-engineered, but hey, it works!
 
 ## Features (If you can call them that)
 - 🧠 **"Memory" System**: A fancy way of saying there's a JSON file where I dump inside jokes and memories so I don't have to touch the Python code ever again.
