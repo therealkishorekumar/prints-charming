@@ -114,31 +114,60 @@ def generate_poem(retries=3):
                 raise e
 
 # Send the poem to the thermal printer
+def _write_poem_to_printer(poem):
+    """Wake the printer and write the full poem job. Raises on failure."""
+    # ESC @ resets/wakes most ESC/POS thermal printers from sleep
+    logger.info("🔔 Sending wake-up signal to printer...")
+    printer.write(b"\x1b@")  # ESC @  — printer init / wake
+    printer.flush()
+    time.sleep(2)            # Give printer time to wake up
+
+    # Charming header
+    printer.write(b"\r\n  -- Prints Charming --  \r\n")
+    printer.write(b"  " + time.strftime("%A, %b %d").encode('utf-8') + b"  \r\n\r\n")
+
+    for line in poem.split('\n'):
+        # Standard 58mm thermal printers usually fit 32 chars per line max.
+        wrapped_lines = textwrap.wrap(line, width=32)
+        for wrapped_line in wrapped_lines:
+            printer.write(wrapped_line.encode('utf-8') + b'\r\n')
+
+    printer.write(b"\r\n      With love,      \r\n")
+    printer.write(b"      Kishore         \r\n\r\n")
+    printer.write(b"------------------------\r\n\r\n")
+    printer.flush()
+
 def print_poem(poem):
+    global printer
     if not printer:
         logger.warning("❌ Print requested, but printer is not available.")
         return False
 
     try:
-        # Charming header
-        printer.write(b"\r\n  -- Prints Charming --  \r\n")
-        printer.write(b"  " + time.strftime("%A, %b %d").encode('utf-8') + b"  \r\n\r\n")
-        
-        for line in poem.split('\n'):
-            # Standard 58mm thermal printers usually fit 32 chars per line max.
-            wrapped_lines = textwrap.wrap(line, width=32)
-            for wrapped_line in wrapped_lines:
-                printer.write(wrapped_line.encode('utf-8') + b'\r\n')
-        
-        printer.write(b"\r\n      With love,      \r\n")
-        printer.write(b"      Kishore         \r\n\r\n")
-        printer.write(b"------------------------\r\n\r\n")
-        printer.flush()
+        _write_poem_to_printer(poem)
         logger.info("🖨️ Poem sent to printer successfully.")
         return True
     except Exception as e:
-        logger.error(f"❌ Error communicating with printer: {e}")
-        return False
+        logger.warning(f"⚠️ First print attempt failed ({e}). Reconnecting and retrying...")
+        # Close the stale connection and try to reopen it
+        try:
+            printer.close()
+        except Exception:
+            pass
+        try:
+            printer = serial.Serial(
+                port="/dev/rfcomm0",
+                baudrate=9600,
+                timeout=1
+            )
+            time.sleep(2)  # Let the connection settle
+            _write_poem_to_printer(poem)
+            logger.info("🖨️ Poem sent to printer successfully (after reconnect).")
+            return True
+        except Exception as e2:
+            logger.error(f"❌ Error communicating with printer after reconnect: {e2}")
+            printer = None  # Mark printer as unavailable until next restart
+            return False
 
 # Flask endpoint to trigger the poem print
 @app.route('/print-poem', methods=['POST'])
